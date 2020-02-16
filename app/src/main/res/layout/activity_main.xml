@@ -102,7 +102,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/sassoon_primary"
                             android:gravity="center_horizontal"
-                            android:text="Interested In"
+                            android:text="Interest"
                             android:textSize="21sp" />
 
                         <TextView
