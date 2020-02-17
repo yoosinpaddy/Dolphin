@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void showAddPlayerDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View dialogView = LayoutInflater.from(this).inflate(R.layout.rec_player_entry, null);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.rec_player_add_entry, null);
         builder.setView(dialogView);
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override

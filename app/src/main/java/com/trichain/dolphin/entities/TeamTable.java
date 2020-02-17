@@ -26,11 +26,11 @@ public class TeamTable implements Serializable {
         this.id = id;
     }
 
-    public String getStartDate() {
+    public String getDescription() {
         return description;
     }
 
-    public void setStartDate(String description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 }

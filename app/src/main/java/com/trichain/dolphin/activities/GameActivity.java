@@ -1,26 +1,27 @@
-package com.trichain.dolphin;
+package com.trichain.dolphin.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.TextView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
+import com.trichain.dolphin.R;
 import com.trichain.dolphin.entities.PeopleTable;
 import com.trichain.dolphin.room.DatabaseClient;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getPeople();
+        RadioGroup radioGroup=findViewById(R.id.radioGroup);
+        RadioButton a,b;
     }
     private void getPeople() {
         class GetPeople extends AsyncTask<Void, Void, List<PeopleTable>> {
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected List<PeopleTable> doInBackground(Void... voids) {
                 List<PeopleTable> peopleTables = DatabaseClient
-                        .getInstance(MainActivity.this)
+                        .getInstance(GameActivity.this)
                         .getAppDatabase()
                         .peopleDao()
                         .getAllofEventPeople();
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 for (int i = 0; i < peopleTables.size(); i++) {
 
                 }
-                MainActivity.this.runOnUiThread(new Runnable() {
+                GameActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
 //                        ((TextView) findViewById(R.id.names)).setText(people);

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:stretchColumns="0,1">
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="16dp">
+
+        <TextView
+            android:id="@+id/tvPlayerName"
+            android:text="Andrew"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <androidx.constraintlayout.widget.ConstraintLayout>
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginRight="10dp"
+                android:padding="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/radioGroup2"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:layout_margin="5dp"
+                    android:drawableBottom="@drawable/ic_check_box"
+                    android:drawableTint="@color/colorPrimaryDark"
+                    android:gravity="center"
+                    android:text="Boys" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:layout_margin="5dp"
+                    android:drawableBottom="@drawable/ic_check_box"
+                    android:drawableTint="@color/colorPrimaryDark"
+                    android:gravity="center"
+                    android:text="Girls" />
+            </RadioGroup>
+
+            <RadioGroup
+                android:id="@+id/radioGroup2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:drawableBottom="@drawable/ic_radio_button_checked"
+                    android:drawableTint="@color/colorPrimaryDark"
+                    android:gravity="center"
+                    android:text="M" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:button="@null"
+                    android:drawableBottom="@drawable/ic_radio_button_checked"
+                    android:drawableTint="@color/colorPrimaryDark"
+                    android:gravity="center"
+                    android:text="F" />
+            </RadioGroup>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </TableRow>
+</TableLayout>
