@@ -20,14 +20,14 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageButton
+            <!--<ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:layout_margin="8dp"
                 android:background="@color/transparent"
-                android:src="@drawable/ic_back_btn" />
+                android:src="@drawable/ic_back_btn" />-->
 
             <TextView
                 android:layout_width="wrap_content"
@@ -38,14 +38,14 @@
                 android:textColor="@color/white"
                 android:textSize="28sp" />
 
-            <ImageButton
+            <!--<ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_margin="8dp"
                 android:background="@color/transparent"
-                android:src="@drawable/ic_menu" />
+                android:src="@drawable/ic_menu" />-->
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 
@@ -73,6 +73,14 @@
                 android:textColor="@color/white"
                 android:textSize="21sp"
                 android:theme="@style/AppTheme.AddButton" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sassoon_primary"
+                android:gravity="center"
+                android:text="Long press to delete"
+                android:textSize="21sp" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
@@ -137,6 +145,7 @@
     </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingBtnPlayGame"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"

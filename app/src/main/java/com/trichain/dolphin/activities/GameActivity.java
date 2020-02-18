@@ -1,11 +1,15 @@
 package com.trichain.dolphin.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.trichain.dolphin.R;
 import com.trichain.dolphin.entities.PeopleTable;
@@ -18,11 +22,26 @@ public class GameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        getPeople();
-        RadioGroup radioGroup=findViewById(R.id.radioGroup);
-        RadioButton a,b;
+        setContentView(R.layout.activity_game);
+        //getPeople();
+        showAddPlayerDialog();
+        RadioGroup radioGroup = findViewById(R.id.radioGroup);
+        RadioButton a, b;
     }
+
+    private void showAddPlayerDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_challenge_options, null);
+        Button accept = dialogView.findViewById(R.id.btnAccept);
+        builder.setView(dialogView);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+        accept.setOnClickListener(v -> dialog.dismiss());
+
+
+    }
+
     private void getPeople() {
         class GetPeople extends AsyncTask<Void, Void, List<PeopleTable>> {
 
