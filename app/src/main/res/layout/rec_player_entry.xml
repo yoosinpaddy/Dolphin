@@ -13,6 +13,8 @@
 
         <TextView
             android:id="@+id/tvPlayerName"
+            android:text="@string/app_name"
+            android:layout_gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -27,9 +29,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
+
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/llGirls"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/llGirls"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
@@ -38,8 +40,10 @@
                     android:text="Boys" />
 
                 <CheckBox
+                    android:id="@+id/boys"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
                     android:checked="true" />
             </LinearLayout>
 
@@ -50,9 +54,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
+                android:layout_marginRight="25dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/llBoys"
+                app:layout_constraintEnd_toStartOf="@+id/llGenderMale"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
@@ -61,16 +65,12 @@
                     android:text="Girls" />
 
                 <CheckBox
+                    android:id="@+id/girls"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
                     android:checked="true" />
             </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
 
             <LinearLayout
                 android:id="@+id/llGenderMale"
@@ -79,8 +79,7 @@
                 android:gravity="center_horizontal"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/llGenderFemale"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/llGenderFemale"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
@@ -89,8 +88,10 @@
                     android:text="M" />
 
                 <RadioButton
+                    android:id="@+id/male"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:clickable="false"
                     android:checked="true" />
             </LinearLayout>
 
@@ -103,7 +104,6 @@
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/llGenderMale"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
@@ -112,6 +112,8 @@
                     android:text="F" />
 
                 <RadioButton
+                    android:id="@+id/female"
+                    android:clickable="false"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="false" />

@@ -12,19 +12,18 @@ public class PeopleTable implements Serializable {
     private int id;
 
     @ColumnInfo(name = "name")
-    private int holidayID;
-
-    @ColumnInfo(name = "sex")
     private String name;
 
+    @ColumnInfo(name = "sex")
+    private int gender;
+
     @ColumnInfo(name = "interest")
-    private String text;
+    private int intrestedIn;
 
-
-
+    @ColumnInfo(name = "score")
+    private int score;
 
     //getters and setters
-
 
     public int getId() {
         return id;
@@ -32,14 +31,6 @@ public class PeopleTable implements Serializable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getHolidayID() {
-        return holidayID;
-    }
-
-    public void setHolidayID(int holidayID) {
-        this.holidayID = holidayID;
     }
 
     public String getName() {
@@ -50,11 +41,27 @@ public class PeopleTable implements Serializable {
         this.name = name;
     }
 
-    public String getText() {
-        return text;
+    public int getGender() {
+        return gender;
     }
 
-    public void setText(String text) {
-        this.text = text;
+    public void setGender(int gender) {
+        this.gender = gender;
+    }
+
+    public int getIntrestedIn() {
+        return intrestedIn;
+    }
+
+    public void setIntrestedIn(int intrestedIn) {
+        this.intrestedIn = intrestedIn;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }
