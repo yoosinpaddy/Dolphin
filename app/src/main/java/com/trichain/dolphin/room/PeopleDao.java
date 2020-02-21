@@ -19,6 +19,9 @@ public interface PeopleDao {
     @Query("SELECT COUNT(id) FROM PeopleTable WHERE 1")
     int getNumberofEventPeople();
 
+    @Query("SELECT * FROM PeopleTable WHERE id=:id")
+    PeopleTable getOnePerson(int id);
+
     @Query("SELECT * FROM PeopleTable WHERE 1")
     List<PeopleTable> getAllofEventPeople();
 
