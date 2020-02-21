@@ -1,0 +1,86 @@
+{
+  "1": {
+    "id": "1",
+    "question": "$$PlayerFemale$$ has to sit on $$PlayerMale$$s lap for 5 minutes.",
+    "players": "2",
+    "level": "1"
+  },
+  "2": {
+    "id": "2",
+    "question": "$$Player$$ has to drink one time.",
+    "players": "1",
+    "level": "1"
+  },
+  "3": {
+    "id": "2",
+    "question": "$$Player$$ has to dance with $$PlayerCompatible$$",
+    "players": "2",
+    "level": "1"
+  },
+  "4": {
+    "id": "4",
+    "question": "$$Player$$ has to drink $$Player$$s drink",
+    "players": "2",
+    "level": "1"
+  },
+  "5": {
+    "id": "5",
+    "question": "$$Player$$ has to drink one time.",
+    "players": "1",
+    "level": "1"
+  },
+  "6": {
+    "id": "6",
+    "question": "$$Player$$ has to finish $$Player$$s drink",
+    "players": "2",
+    "level": "2"
+  },
+  "7": {
+    "id": "7",
+    "question": "$$PlayerMale$$ has to make 5 pushups with $$PlayerFemale$$ on his back.",
+    "players": "2",
+    "level": "2"
+  },
+  "8": {
+    "id": "8",
+    "question": "$$Player$$ has to kiss $$PlayerCompatible$$",
+    "players": "2",
+    "level": "2"
+  },
+  "9": {
+    "id": "9",
+    "question": "$$PlayerMale$$ has to make 5 pushups with $$PlayerFemale$$ on his back.",
+    "players": "2",
+    "level": "2"
+  },
+  "10": {
+    "id": "10",
+    "question": "$$Player$$ finishes $$Player$$ and $$Player$$s drink",
+    "players": "3",
+    "level": "2"
+  },
+  "11": {
+    "id": "11",
+    "question": "$$Player$$ has to drink every time $$Player$$ has to drink",
+    "players": "2",
+    "level": "3"
+  },
+  "12": {
+    "id": "12",
+    "question": "$$Player$$ has to tell a fantasy with player $$PlyerCompatible$$",
+    "players": "2",
+    "level": "3"
+  },
+  "13": {
+    "id": "13",
+    "question": "$$Player$$ has to look $$PlayerCompatible$$ in the eyes and finish the drink of that player",
+    "players": "2",
+    "level": "3"
+  },
+  "14": {
+    "id": "14",
+    "question": "$$Player$$ drinks of any other players drinks.",
+    "players": "1",
+    "level": "3"
+  }
+}
