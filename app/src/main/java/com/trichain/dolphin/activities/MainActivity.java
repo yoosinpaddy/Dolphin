@@ -8,14 +8,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     List<PeopleTable> peopleTables;
     private PeopleAdapter peopleAdapter;
     private RecyclerView recyclerView;
+    private TextView tvNoPlayers;
 
 
     @Override
@@ -49,15 +50,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnAddPlayer = findViewById(R.id.btnAddplayer);
         btnAddPlayer.setOnClickListener(this);
 
-
-
-
         getPeople();
 
         findViewById(R.id.floatingBtnPlayGame).setOnClickListener(v -> {
-            if (peopleTables.size()<=1){
+            if (peopleTables.size() <= 1) {
                 Toast.makeText(this, "Please add more players", Toast.LENGTH_SHORT).show();
-            }else{
+            } else {
                 resetPoints();
             }
         });
@@ -70,8 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void resetPoints()
-    {
+    private void resetPoints() {
         class DelPeople extends AsyncTask<Void, Void, Void> {
 
             @Override
@@ -93,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DelPeople gh = new DelPeople();
         gh.execute();
     }
+
     private void showAddPlayerDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final View dialogView = LayoutInflater.from(this).inflate(R.layout.rec_player_add_entry, null);
@@ -261,10 +259,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             protected void onPostExecute(final List<PeopleTable> peopleTables) {
                 super.onPostExecute(peopleTables);
                 //Init recyclerView and adapter
+                tvNoPlayers = findViewById(R.id.tvNoPlayers);
+                if (peopleTables.size() < 1) {
+                    tvNoPlayers.setVisibility(View.VISIBLE);
+                } else {
+                    tvNoPlayers.setVisibility(View.GONE);
+                }
+                LayoutAnimationController animationController = AnimationUtils.loadLayoutAnimation(MainActivity.this, R.anim.layout_animation_fall_down);
                 peopleAdapter = new PeopleAdapter(peopleTables, MainActivity.this);
                 peopleAdapter.notifyDataSetChanged();
                 recyclerView = findViewById(R.id.recyclerViewPlayersEntry);
                 recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                recyclerView.setLayoutAnimation(animationController);
                 recyclerView.setAdapter(peopleAdapter);
                 RecyclerItemClickListener recyclerItemClickListener = new RecyclerItemClickListener(MainActivity.this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
                     @Override

@@ -14,7 +14,7 @@
         android:fontFamily="@font/sassoon_primary"
         android:text="Player Name"
         android:textColor="@color/black"
-        android:textSize="24dp" />
+        android:textSize="32sp" />
 
 
     <TextView
@@ -26,13 +26,13 @@
         android:fontFamily="@font/three_dumb"
         android:text="10"
         android:textColor="@color/black"
-        android:textSize="34dp" />
+        android:textSize="48sp" />
 
 
     <ImageView
         android:id="@+id/imgCrown"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
         android:layout_gravity="center_vertical"
         android:layout_margin="12dp"
         android:src="@drawable/ic_crown"

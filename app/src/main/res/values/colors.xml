@@ -5,15 +5,15 @@
     <color name="colorPrimaryLighter">#BF61FF</color>
     <color name="colorAccent">#328cbf</color>
     <color name="colorAccentLight">#4EB2EB</color>
-
     <color name="colorPrimaryAlmostLight">#32179e</color>
     <color name="colorPrimaryLightest">#9d03fa</color>
-
     <color name="colorLightGrey">#EEEEEE</color>
     <color name="colorNavBG">#E6EAEC</color>
     <color name="white">#FFFFFF</color>
     <color name="dodgerBlue">#1e90ff</color>
-    <color name="gold">#ffd700</color>
+    <color name="colorGold">#ffd700</color>
+    <color name="colorSilver">#999999</color>
+    <color name="colorBronze">#cd7f32</color>
     <color name="black">#000000</color>
     <color name="transparent">#00ffffff</color>
     <color name="blackTranslucent">#32000000</color>
@@ -23,6 +23,5 @@
     <color name="grey">#BDBDBD</color>
     <color name="dangerRed">#FF3C3C</color>
     <color name="colorWarning">#FF9800</color>
-
     <color name="black_overlay">#44000000</color>
 </resources>
