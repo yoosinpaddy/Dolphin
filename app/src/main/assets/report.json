@@ -67,7 +67,7 @@
   },
   "12": {
     "id": "12",
-    "question": "$$Player$$ has to tell a fantasy with player $$PlyerCompatible$$",
+    "question": "$$Player$$ has to tell a fantasy with player $$PlayerCompatible$$",
     "players": "2",
     "level": "3"
   },
