@@ -21,6 +21,10 @@
         <item name="buttonStyle">@drawable/primary_button_bg</item>
     </style>
 
+    <style name="AppTheme.FailedButton" parent="AppTheme">
+        <item name="buttonStyle">@color/dangerRed</item>
+    </style>
+
     <style name="AppTheme.FloatingColoredButton" parent="AppTheme">
         <item name="android:colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/white</item>

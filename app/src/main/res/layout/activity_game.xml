@@ -93,14 +93,25 @@
 
             <Button
                 android:id="@+id/done"
+                style="@style/AppTheme.CustomButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvChallengeMain"
                 android:layout_margin="16dp"
                 android:fontFamily="@font/two_dumb"
                 android:text="Done"
-                android:textSize="24sp"
-                android:theme="@style/AppTheme.CustomButton" />
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/btnFailed"
+                style="@style/AppTheme.FailedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/done"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/two_dumb"
+                android:text="Failed"
+                android:textSize="24sp" />
 
         </RelativeLayout>
     </com.google.android.material.card.MaterialCardView>
