@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -53,7 +54,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         getPeople();
 
-        findViewById(R.id.floatingBtnPlayGame).setOnClickListener(v -> startActivity(new Intent(MainActivity.this, GameActivity.class)));
+        findViewById(R.id.floatingBtnPlayGame).setOnClickListener(v -> {
+            if (peopleTables.size()<=1){
+                Toast.makeText(this, "Please add more players", Toast.LENGTH_SHORT).show();
+            }else{
+                resetPoints();
+            }
+        });
     }
 
     @Override
@@ -63,6 +70,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void resetPoints()
+    {
+        class DelPeople extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                DatabaseClient
+                        .getInstance(MainActivity.this)
+                        .getAppDatabase()
+                        .peopleDao()
+                        .resetPoints();
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void v) {
+                startActivity(new Intent(MainActivity.this, GameActivity.class));
+            }
+        }
+
+        DelPeople gh = new DelPeople();
+        gh.execute();
+    }
     private void showAddPlayerDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final View dialogView = LayoutInflater.from(this).inflate(R.layout.rec_player_add_entry, null);
@@ -251,7 +281,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                PeopleTable pp = peopleTables.get(position+1);
+                                PeopleTable pp = peopleTables.get(position);
                                 deletePeople(pp);
                                 isShowingDialog = false;
                             }
