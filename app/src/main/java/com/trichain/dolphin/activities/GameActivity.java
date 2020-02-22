@@ -1,6 +1,5 @@
 package com.trichain.dolphin.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -18,24 +17,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.trichain.dolphin.R;
-import com.trichain.dolphin.adapter.PeopleAdapter;
 import com.trichain.dolphin.adapter.ResultsAdapter;
 import com.trichain.dolphin.entities.PeopleTable;
 import com.trichain.dolphin.entities.QuestionTable;
 import com.trichain.dolphin.room.DatabaseClient;
 import com.trichain.dolphin.utils.RecyclerItemClickListener;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -75,9 +70,36 @@ public class GameActivity extends AppCompatActivity {
         });
         getPeople();
         jsonQuestions = loadJSONFromAsset();
-//        showAddPlayerDialog("jj");
+//        showChallengeDialog("jj");
         RadioGroup radioGroup = findViewById(R.id.radioGroup);
         RadioButton a, b;
+    }
+
+    private void getNextQuestion() {
+//        Collections.shuffle(questionList);
+
+        currentQuize++;
+        if (questionTables.size() == 0) {
+            //TODO GAme Over
+            showGameOverDialog();
+            return;
+        }
+        Log.e(TAG, "getNextQuestion: CURRENT QLIST " + questionTables.size());
+        if (currentQuize >= questionTables.size()) {
+//            done
+            currentQuize = 1;
+        }
+        if (currentPlayer > playerlist.size()) {
+            Log.e(TAG, "getNextQuestion: END OF LEVEL " + intLevel);
+            intLevel++;
+            currentPlayer = 1;
+            prepareQuestions();
+            return;
+        }
+        Log.e(TAG, "getNextQuestion: CURRENT  QUIZE " + currentQuize);
+        QuestionTable prematureQuize = questionTables.get(currentQuize - 1);
+        String matureQuize = getMatureQuize(prematureQuize);
+        showChallengeDialog(matureQuize);
     }
 
     private void showGameOverDialog() {
@@ -108,7 +130,7 @@ public class GameActivity extends AppCompatActivity {
                         .getInstance(GameActivity.this)
                         .getAppDatabase()
                         .peopleDao()
-                        .getAllofEventPeople();
+                        .getEndofEventPeople();
                 return peopleTables;
             }
 
@@ -166,7 +188,7 @@ public class GameActivity extends AppCompatActivity {
         GetPeople gh = new GetPeople();
         gh.execute();
     }
-    private void showAddPlayerDialog(String gameQuestion) {
+    private void showChallengeDialog(String gameQuestion) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_challenge_options, null);
         TextView tvChallenge = dialogView.findViewById(R.id.tvChallenge);
@@ -174,6 +196,7 @@ public class GameActivity extends AppCompatActivity {
         Button accept = dialogView.findViewById(R.id.btnAccept);
         builder.setView(dialogView);
         AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
         tvChallengeMain.setText(gameQuestion);
         accept.setOnClickListener(v -> dialog.dismiss());
@@ -215,33 +238,6 @@ public class GameActivity extends AppCompatActivity {
 
         GetPerson gh = new GetPerson();
         gh.execute();
-    }
-
-    private void getNextQuestion() {
-//        Collections.shuffle(questionList);
-
-        currentQuize++;
-        if (questionTables.size() == 0) {
-            //TODO GAme Over
-            showGameOverDialog();
-            return;
-        }
-        Log.e(TAG, "getNextQuestion: CURRENT QLIST " + questionTables.size());
-        if (currentQuize >= questionTables.size()) {
-//            done
-            currentQuize = 1;
-        }
-        if (currentPlayer >= playerlist.size()) {
-            Log.e(TAG, "getNextQuestion: END OF LEVEL " + intLevel);
-            intLevel++;
-            currentPlayer = 1;
-            prepareQuestions();
-            return;
-        }
-        Log.e(TAG, "getNextQuestion: CURRENT  QUIZE " + currentQuize);
-        QuestionTable prematureQuize = questionTables.get(currentQuize - 1);
-        String matureQuize = getMatureQuize(prematureQuize);
-        showAddPlayerDialog(matureQuize);
     }
 
     private String getMatureQuize(QuestionTable prematureQuize) {

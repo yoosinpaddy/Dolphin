@@ -22,6 +22,12 @@ public interface PeopleDao {
     @Query("SELECT * FROM PeopleTable WHERE id=:id")
     PeopleTable getOnePerson(int id);
 
+    @Query("UPDATE PeopleTable SET score=0 WHERE 1")
+    void resetPoints();
+
+    @Query("SELECT * FROM PeopleTable WHERE 1 order by score desc")
+    List<PeopleTable> getEndofEventPeople();
+
     @Query("SELECT * FROM PeopleTable WHERE 1")
     List<PeopleTable> getAllofEventPeople();
 
