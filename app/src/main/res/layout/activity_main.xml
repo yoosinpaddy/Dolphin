@@ -4,13 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_layer"
+    android:fitsSystemWindows="true"
     tools:context=".activities.MainActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/mainToolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
+        android:background="@color/black_overlay"
         app:contentInsetStart="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -53,13 +55,16 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/mainToolbar">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingTop="36dp">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnAddplayer"
@@ -67,12 +72,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="16dp"
+                android:drawableStart="@drawable/ic_add"
                 android:fontFamily="@font/two_dumb"
                 android:text="Add Player"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="21sp"
-                android:theme="@style/AppTheme.AddButton" />
+                android:textSize="21sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -80,12 +85,15 @@
                 android:fontFamily="@font/sassoon_primary"
                 android:gravity="center"
                 android:text="Long press to delete"
+                android:textColor="@color/white"
                 android:textSize="21sp" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="16dp">
+                android:elevation="8dp"
+                android:layout_margin="16dp"
+                app:cardCornerRadius="12dp">
 
                 <TableLayout
                     android:layout_width="match_parent"

@@ -4,6 +4,11 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:navigationBarColor">@color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 
     <style name="AppTheme.AddButton" parent="AppTheme">
@@ -12,6 +17,9 @@
         <item name="android:drawablePadding">8dp</item>
     </style>
 
+    <style name="AppTheme.CustomButton" parent="AppTheme">
+        <item name="buttonStyle">@drawable/primary_button_bg</item>
+    </style>
 
     <style name="AppTheme.FloatingColoredButton" parent="AppTheme">
         <item name="android:colorAccent">@color/colorAccent</item>
