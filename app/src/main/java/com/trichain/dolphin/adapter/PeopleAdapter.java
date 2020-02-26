@@ -47,8 +47,12 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.PeopleView
         if (player.getIntrestedIn() == 0) {
             holder.boys.setChecked(true);
             holder.girls.setChecked(false);
-        } else {
+        } else if(player.getIntrestedIn() == 1){
             holder.boys.setChecked(false);
+            holder.girls.setChecked(true);
+
+        }else {
+            holder.boys.setChecked(true);
             holder.girls.setChecked(true);
         }
     }

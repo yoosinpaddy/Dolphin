@@ -19,7 +19,7 @@
   },
   "4": {
     "id": "4",
-    "question": "$$Player$$ has to drink $$Player$$s drink",
+    "question": "$$Player$$ has to drink $$Player$$'s drink",
     "players": "2",
     "level": "1"
   },

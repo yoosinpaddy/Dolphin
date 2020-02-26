@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -46,12 +47,14 @@ public class GameActivity extends AppCompatActivity {
     String TAG = "GameActivity";
     int currentQuize = 0;
     int currentPlayer = 1;
-    TextView tvChallengeMain;
-    Button done;
+    TextView tvChallengeMain,tvQuestionNumber;
+    Button done,btnFailed,reject;
     int activePlayerId;
+    boolean accepted =false;
 
     private ResultsAdapter resultsAdapter;
     private RecyclerView recyclerView;
+    boolean allowbonusPlayer=true;
 
 
     int intLevel = 1;
@@ -61,10 +64,19 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
         tvChallengeMain = findViewById(R.id.tvChallengeMain);
+        tvQuestionNumber = findViewById(R.id.tvQuestionNumber);
         done = findViewById(R.id.done);
+        btnFailed = findViewById(R.id.btnFailed);
+        btnFailed.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                donePlayingOnegame(v);
+            }
+        });
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                accepted=true;
                 donePlayingOnegame(v);
             }
         });
@@ -77,7 +89,7 @@ public class GameActivity extends AppCompatActivity {
 
     private void getNextQuestion() {
 //        Collections.shuffle(questionList);
-
+        accepted=false;
         currentQuize++;
         if (questionTables.size() == 0) {
             //TODO GAme Over
@@ -89,12 +101,22 @@ public class GameActivity extends AppCompatActivity {
 //            done
             currentQuize = 1;
         }
-        if (currentPlayer > playerlist.size()) {
+        if (currentPlayer > peopleTables.size()) {
             Log.e(TAG, "getNextQuestion: END OF LEVEL " + intLevel);
             intLevel++;
             currentPlayer = 1;
-            prepareQuestions();
-            return;
+            if (allowbonusPlayer){
+                allowbonusPlayer=false;
+                Log.e(TAG, "getFinalQuestion: CURRENT  QUIZE " + currentQuize);
+                QuestionTable prematureQuize = questionTables.get(currentQuize - 1);
+                String matureQuize = getMatureQuize(prematureQuize);
+                showChallengeDialog(matureQuize);
+                return;
+            }else {
+                allowbonusPlayer=true;
+                prepareQuestions();
+                return;
+            }
         }
         Log.e(TAG, "getNextQuestion: CURRENT  QUIZE " + currentQuize);
         QuestionTable prematureQuize = questionTables.get(currentQuize - 1);
@@ -194,19 +216,33 @@ public class GameActivity extends AppCompatActivity {
         TextView tvChallenge = dialogView.findViewById(R.id.tvChallenge);
         tvChallenge.setText(gameQuestion);
         Button accept = dialogView.findViewById(R.id.btnAccept);
+        Button btnReject = dialogView.findViewById(R.id.btnReject);
         builder.setView(dialogView);
         AlertDialog dialog = builder.create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
         tvChallengeMain.setText(gameQuestion);
+        tvQuestionNumber.setText(String.valueOf(currentQuize)+"/"+questionTables.size());
         accept.setOnClickListener(v -> dialog.dismiss());
+        btnReject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                donePlayingOnegame(v);
+            }
+        });
 
 
     }
 
     private void donePlayingOnegame(View view) {
-        peopleplayingNow = new ArrayList<Integer>();
-        addOnepoint(activePlayerId);
+        Log.e(TAG, "donePlayingOnegame: " );
+        peopleplayingNow = new ArrayList<Integer>(0);
+        Log.e(TAG, "donePlayingOnegame: Initializing Array"+peopleplayingNow.size() );
+
+        if (accepted){
+            addOnepoint(activePlayerId);
+        }
         getNextQuestion();
     }
 
@@ -248,14 +284,27 @@ public class GameActivity extends AppCompatActivity {
         String lastindex = "";
         if (players == 1) {
             Log.e(TAG, "getMatureQuize: one player");
-            String player1 = getPlayer1(gettingPlayers[1]);
+            String player1;
+
+            //check if we are allowing second chance fora random player
+            if (!allowbonusPlayer){
+                player1=getPlayer1Bonus(gettingPlayers[1]);
+            }else {
+                player1 = getPlayer1(gettingPlayers[1]);
+            }
             if (gettingPlayers.length == 3) {
                 lastindex = gettingPlayers[2];
             }
             finalQuize = gettingPlayers[0] + player1 + lastindex;
         } else if (players == 2) {
             Log.e(TAG, "getMatureQuize: two player");
-            String player1 = getPlayer1(gettingPlayers[1]);
+            String player1;
+            //check if we are allowing second chance fora random player
+            if (!allowbonusPlayer){
+                player1=getPlayer1Bonus(gettingPlayers[1]);
+            }else {
+                player1 = getPlayer1(gettingPlayers[1]);
+            }
             String player2 = getAnotherPlayer(gettingPlayers[3]);
             Log.e(TAG, "getMatureQuize: temp:player2" + player1 + player2);
             if (gettingPlayers.length == 5) {
@@ -265,7 +314,13 @@ public class GameActivity extends AppCompatActivity {
         } else if (players == 3) {
             Log.e(TAG, "getMatureQuize: three player");
             Log.e(TAG, "getMatureQuize: two player");
-            String player1 = getPlayer1(gettingPlayers[1]);
+            String player1;
+            //check if we are allowing second chance fora random player
+            if (!allowbonusPlayer){
+                player1=getPlayer1Bonus(gettingPlayers[1]);
+            }else {
+                player1 = getPlayer1(gettingPlayers[1]);
+            }
             String player2 = getAnotherPlayer(gettingPlayers[3]);
             String player3 = getAnotherPlayer(gettingPlayers[5]);
             Log.e(TAG, "getMatureQuize: temp:player2" + player2 + player3);
@@ -279,6 +334,50 @@ public class GameActivity extends AppCompatActivity {
         return finalQuize;
     }
 
+    private String getPlayer1Bonus(String temp) {
+        int random = getRandom();
+        int onlythistime = currentPlayer - 1;
+        String player1;
+        if (temp.contentEquals("Player")) {
+            player1 = peopleTables.get(onlythistime).getName();
+            activePlayerId = random;
+        } else if (temp.contentEquals("PlayerMale")) {
+            if (hasMale()) {
+                while (!isMale(random)) {
+                    random = getRandom();
+                }
+            } else {
+                while (isMale(random)) {
+                    random = getRandom();
+                }
+            }
+            player1 = getplayerWithID(random);
+            activePlayerId = random;
+
+        } else if (temp.contentEquals("PlayerFemale")) {
+            int i = 1;
+            if (hasFemale()) {
+                while (isMale(random)) {
+                    random = getRandom();
+                }
+
+            } else {
+
+                while (!isMale(random)) {
+                    random = getRandom();
+                }
+            }
+            player1 = getplayerWithID(random);
+            activePlayerId = random;
+
+        } else {
+            player1 = getplayerWithID(random);
+            activePlayerId = random;
+        }
+        Log.e(TAG, "getPlayer1 : " + activePlayerId);
+        peopleplayingNow.add(random);
+        return player1;
+    }
     private String getPlayer1(String temp) {
         int onlythistime = currentPlayer - 1;
         String player1;
@@ -323,47 +422,61 @@ public class GameActivity extends AppCompatActivity {
             player1 = getplayerWithID(peopleTables.get(onlythistime).getId());
             activePlayerId = peopleTables.get(onlythistime).getId();
         }
-        Log.e(TAG, "getPlayer1 Get active Player: " + activePlayerId);
+        Log.e(TAG, "getPlayer1 : " + activePlayerId);
         peopleplayingNow.add(peopleTables.get(onlythistime).getId());
+        Log.e(TAG, "getPlayer1: Playng now size:"+peopleplayingNow.size() );
         return player1;
     }
 
     private String getAnotherPlayer(String temp) {
         int random = getRandom();
         if (temp.contentEquals("Player")) {
-            while (activePlayerId == random && !playerExists(random) && isPlayingNow(random)) {
+            while (activePlayerId == random || isPlayingNow(random) || !playerExists(random)) {
                 random = getRandom();
+                Log.e(TAG, "getAnotherPlayer:-"+random );
+                Log.e(TAG, "getAnotherPlayer: looping" );
             }
+            Log.e(TAG, "getAnotherPlayer: "+random );
             peopleplayingNow.add(random);
             return getplayerWithID(random);
         } else if (temp.contentEquals("PlayerMale")) {
             random = getRandom();
             if (hasMale()) {
-                while (activePlayerId == random && isPlayingNow(random) && !isMale(random) && playerExists(random)) {
+                while (activePlayerId == random ||isPlayingNow(random) || !isMale(random) || !playerExists(random)) {
                     random = getRandom();
+                    Log.e(TAG, "getAnotherPlayer:-"+random );
+                    Log.e(TAG, "getAnotherPlayer: looping" );
                 }
             } else {
                 //just fetch a female
-                while (activePlayerId == random && isPlayingNow(random) && isMale(random) && !playerExists(random)) {
+                while (activePlayerId == random || isPlayingNow(random) || isMale(random) || !playerExists(random)) {
                     random = getRandom();
+                    Log.e(TAG, "getAnotherPlayer:-"+random );
+                    Log.e(TAG, "getAnotherPlayer: looping" );
                 }
 
             }
+            Log.e(TAG, "getAnotherPlayer: "+random );
             peopleplayingNow.add(random);
             return getplayerWithID(random);
 
         } else if (temp.contentEquals("PlayerFemale")) {
             random = getRandom();
             if (hasFemale()) {
-                while (activePlayerId == random && isPlayingNow(random) && isMale(random) && !playerExists(random)) {
+                while (activePlayerId == random || isPlayingNow(random) || isMale(random) || !playerExists(random)) {
                     random = getRandom();
+                    Log.e(TAG, "getAnotherPlayer:-"+random );
+                    Log.e(TAG, "getAnotherPlayer: looping" );
                 }
             } else {
                 //just fetch a male
-                while (activePlayerId == random && isPlayingNow(random) && !isMale(random) && playerExists(random)) {
+                while (activePlayerId == random || isPlayingNow(random) || !isMale(random) || !playerExists(random)) {
                     random = getRandom();
+                    Log.e(TAG, "getAnotherPlayer:-"+random );
+                    Log.e(TAG, "getAnotherPlayer: looping" );
                 }
             }
+            Log.e(TAG, "getAnotherPlayer: "+random );
             peopleplayingNow.add(random);
             return getplayerWithID(random);
         } else if (temp.contentEquals("PlayerCompatible")) {
@@ -373,29 +486,78 @@ public class GameActivity extends AppCompatActivity {
             }
             if (likesMen(random)) {
                 if (hasMale()) {
-                    while (playerlist.get(currentPlayer - 1) == random && isPlayingNow(random) && !isMale(random) && playerExists(random)) {
+                    while (activePlayerId == random || isPlayingNow(random) || !isMale(random) || !playerExists(random)) {
                         random = getRandom();
+                        Log.e(TAG, "getAnotherPlayer:-"+random );
+                        Log.e(TAG, "getAnotherPlayer: looping" );
                     }
                 } else {
                     //just fetch a female
-                    while (playerlist.get(currentPlayer - 1) == random && isMale(random) && isPlayingNow(random) && !playerExists(random)) {
+                    while (activePlayerId == random || isMale(random) || isPlayingNow(random) || !playerExists(random)) {
                         random = getRandom();
+                        Log.e(TAG, "getAnotherPlayer:-"+random );
+                        Log.e(TAG, "getAnotherPlayer: looping" );
                     }
 
                 }
+                Log.e(TAG, "getAnotherPlayer: "+random );
                 peopleplayingNow.add(random);
                 return getplayerWithID(random);
-            } else {
+            } else if (likesAny(random)){
+//                randomly choose between male and female
+                int rnd = new Random().nextInt(2);
+                if (rnd>1){
+                    if (hasMale()) {
+                        while (activePlayerId == random || isPlayingNow(random) || !isMale(random) || !playerExists(random)) {
+                            random = getRandom();
+                            Log.e(TAG, "getAnotherPlayer:-"+random );
+                            Log.e(TAG, "getAnotherPlayer: looping" );
+                        }
+                    } else {
+                        //just fetch a female
+                        while (activePlayerId == random || isMale(random) || isPlayingNow(random) || !playerExists(random)) {
+                            random = getRandom();
+                            Log.e(TAG, "getAnotherPlayer:-"+random );
+                            Log.e(TAG, "getAnotherPlayer: looping" );
+                        }
+
+                    }
+                }else {
+
+                    if (hasFemale()) {
+                        while (activePlayerId == random || isMale(random) || isPlayingNow(random) || !playerExists(random)) {
+                            random = getRandom();
+                            Log.e(TAG, "getAnotherPlayer:-"+random );
+                            Log.e(TAG, "getAnotherPlayer: looping" );
+                        }
+                    } else {
+                        //just fetch a male
+                        while (activePlayerId == random || isPlayingNow(random) || !isMale(random) || !playerExists(random)) {
+                            random = getRandom();
+                            Log.e(TAG, "getAnotherPlayer:-"+random );
+                            Log.e(TAG, "getAnotherPlayer: looping" );
+                        }
+                    }
+                }
+                Log.e(TAG, "getAnotherPlayer: "+random );
+                peopleplayingNow.add(random);
+                return getplayerWithID(random);
+            }else{
                 if (hasFemale()) {
-                    while (playerlist.get(currentPlayer - 1) == random && isMale(random) && isPlayingNow(random) && !playerExists(random)) {
+                    while (activePlayerId == random || isMale(random) || isPlayingNow(random) || !playerExists(random)) {
                         random = getRandom();
+                        Log.e(TAG, "getAnotherPlayer:-"+random );
+                        Log.e(TAG, "getAnotherPlayer: looping" );
                     }
                 } else {
                     //just fetch a male
-                    while (playerlist.get(currentPlayer - 1) == random && isPlayingNow(random) && !isMale(random) && playerExists(random)) {
+                    while (activePlayerId == random || isPlayingNow(random) || !isMale(random) || !playerExists(random)) {
                         random = getRandom();
+                        Log.e(TAG, "getAnotherPlayer:-"+random );
+                        Log.e(TAG, "getAnotherPlayer: looping" );
                     }
                 }
+                Log.e(TAG, "getAnotherPlayer: "+random );
                 peopleplayingNow.add(random);
                 return getplayerWithID(random);
             }
@@ -414,8 +576,8 @@ public class GameActivity extends AppCompatActivity {
 
     public boolean playerExists(int a) {
         boolean exists = false;
-        for (int i = 0; i < playerlist.size(); i++) {
-            if (playerlist.get(i) == a) {
+        for (int i = 0; i < peopleTables.size(); i++) {
+            if (peopleTables.get(i).getId() == a) {
                 exists = true;
             }
 
@@ -425,23 +587,36 @@ public class GameActivity extends AppCompatActivity {
 
     public boolean hasMale() {
         boolean exists = false;
+        int noOfMen=0;
+        PeopleTable peopleTable = null;
         for (int i = 0; i < peopleTables.size(); i++) {
             if (peopleTables.get(i).getGender() == 0) {
-                exists = true;
+                noOfMen++;
+                peopleTable=peopleTables.get(i);
+                exists=true;
             }
 
+        }
+        if (noOfMen==1&&activePlayerId==peopleTable.getId()){
+            exists=false;
         }
         return exists;
     }
 
     public boolean hasFemale() {
         boolean exists = false;
+        int noffemale=0;
+        PeopleTable peopleTable = null;
         for (int i = 0; i < peopleTables.size(); i++) {
-            Log.e(TAG, "hasFemale: size" + playerlist.size());
             if (peopleTables.get(i).getGender() == 1) {
-                exists = true;
+                noffemale++;
+                peopleTable=peopleTables.get(i);
+                exists=true;
             }
 
+        }
+        if (noffemale==1&&activePlayerId==peopleTable.getId()){
+            exists=false;
         }
         return exists;
     }
@@ -479,6 +654,16 @@ public class GameActivity extends AppCompatActivity {
         return res;
     }
 
+    private boolean likesAny(int id) {
+        boolean res = false;
+        for (int i = 0; i < peopleTables.size(); i++) {
+            if (peopleTables.get(i).getId() == id && peopleTables.get(i).getIntrestedIn() == 2) {
+                Log.e(TAG, "likesBoth: ");
+                res = true;
+            }
+        }
+        return res;
+    }
     private boolean likesMen(int id) {
         boolean res = false;
         for (int i = 0; i < peopleTables.size(); i++) {
@@ -524,22 +709,14 @@ public class GameActivity extends AppCompatActivity {
                     }
                 }
             }
+            //Shuffle The List of players
+            if (peopleTables!=null){
+                Collections.shuffle(peopleTables);
+            }
             getNextQuestion();
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    private void getFemaleplayer() {
-
-    }
-
-    private void getMaleplayer() {
-
-    }
-
-    private void getCompatibleplayer() {
-
     }
 
     private void getPeople() {
@@ -561,6 +738,7 @@ public class GameActivity extends AppCompatActivity {
                 for (int i = 0; i < peopleTables.size(); i++) {
                     playerlist.add(peopleTables.get(i).getId());
                 }
+                Collections.shuffle(peopleTables);
                 if (questionTables == null) {
                     prepareQuestions();
                 } else {

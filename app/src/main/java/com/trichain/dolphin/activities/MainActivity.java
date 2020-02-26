@@ -32,7 +32,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     Button btnAddPlayer;
-    Boolean new_gender_male, new_like_male;
+    Boolean new_gender_male,new_like_female;
+    int new_like_male=0;
     boolean isShowingDialog = false;
     String TAG = "MainActivity";
     String mName = "";
@@ -40,13 +41,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private PeopleAdapter peopleAdapter;
     private RecyclerView recyclerView;
     private TextView tvNoPlayers;
+    boolean bCheck,gCheck;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        new_like_female=false;
+        bCheck=false;
+        gCheck=false;
         btnAddPlayer = findViewById(R.id.btnAddplayer);
         btnAddPlayer.setOnClickListener(this);
 
@@ -104,9 +108,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
                 Drawable img = getResources().getDrawable(R.drawable.ic_check_box);
                 Drawable img2 = getResources().getDrawable(R.drawable.ic_check_box_outline);
-                like_boy.setCompoundDrawablesWithIntrinsicBounds(null, null, null, img);
-                like_girl.setCompoundDrawablesWithIntrinsicBounds(null, null, null, img2);
-                new_like_male = true;
+                if (!bCheck){
+                    like_boy.setCompoundDrawablesWithIntrinsicBounds(null, null, null, img);
+                    new_like_male++;
+                    Log.e(TAG, "onClick: Checked"+new_like_male  );
+                    bCheck=true;
+                }else {
+                    like_boy.setCompoundDrawablesWithIntrinsicBounds(null, null, null, img2);
+                    new_like_male--;
+                    Log.e(TAG, "onClick: Not Checked"+new_like_male  );
+                    bCheck=false;
+                }
             }
         });
         like_girl.setOnClickListener(new View.OnClickListener() {
@@ -114,9 +126,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View v) {
                 Drawable img = getResources().getDrawable(R.drawable.ic_check_box);
                 Drawable img2 = getResources().getDrawable(R.drawable.ic_check_box_outline);
-                like_boy.setCompoundDrawablesWithIntrinsicBounds(null, null, null, img2);
-                like_girl.setCompoundDrawablesWithIntrinsicBounds(null, null, null, img);
-                new_like_male = false;
+                if (!gCheck){
+                    like_girl.setCompoundDrawablesWithIntrinsicBounds(null, null, null, img);
+                    new_like_male++;
+                    Log.e(TAG, "onClick: Checked"+new_like_male  );
+                    new_like_female=true;
+                    gCheck=true;
+                }else {
+                    like_girl.setCompoundDrawablesWithIntrinsicBounds(null, null, null, img2);
+                    new_like_male--;
+                    Log.e(TAG, "onClick: Not Checked"+new_like_male );
+                    new_like_female=false;
+                    gCheck=false;
+                }
             }
         });
         gender_male.setOnClickListener(new View.OnClickListener() {
@@ -143,14 +165,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         builder.setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (new_like_male == null || new_gender_male == null) {
+                if (new_like_male == 0 || new_gender_male == null) {
                     Log.e(TAG, "onClick: something is nul");
+                    Toast.makeText(MainActivity.this, "You must choose What you like", Toast.LENGTH_SHORT).show();
                 } else {
                     int a, b;
-                    if (new_like_male) {
-                        a = 0;
-                    } else {
-                        a = 1;
+                    if (new_like_female){
+                        if (new_like_male==2){
+                            //likes both genders
+                            a=2;
+                            Log.e(TAG, "onClick: likes both" );
+                        }else{
+                            //likes females only
+                            a=1;
+                            Log.e(TAG, "onClick: likes female" );
+                        }
+                    }else {
+                        //likes male
+                        a=0;
+                        Log.e(TAG, "onClick: likes male" );
                     }
                     if (new_gender_male) {
                         b = 0;
